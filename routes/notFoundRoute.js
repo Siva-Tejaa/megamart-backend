@@ -8,7 +8,7 @@ router.use("/", (req, res) => {
   errorResponse.success = false;
   errorResponse.error = [];
   errorResponse.message =
-    "The requested resource was not found on this server.";
+    "The requested resource was not found on this server :(";
   errorResponse.statusCode = 404;
   errorResponse.statusText = "Not Found";
 
