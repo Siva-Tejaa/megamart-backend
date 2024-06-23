@@ -1,27 +1,151 @@
 const { errorResponse, successResponse } = require("../config/globalResponse");
 
+//Util functions
+const { hashPassword, comparePassword } = require("../utils/passwordUtil");
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../utils/jwtUtils");
+
+//Models
+const User = require("../models/userModel");
+
 //SignUp Controller
 const signup = async (req, res) => {
-  //Sending Response
-  successResponse.success = true;
-  successResponse.data = [];
-  successResponse.message = "Signup Successful";
-  successResponse.statusCode = 200;
-  successResponse.statusText = "OK";
+  try {
+    const { firstName, lastName, email, mobileNumber, password } = req.body;
 
-  return res.status(200).json(successResponse);
+    //Find the User if already exists in the database based on email and mobileNumber
+    const existingUser = await User.findOne({
+      $or: [{ email: email }, { mobileNumber: mobileNumber }],
+    });
+
+    if (existingUser) {
+      errorResponse.success = false;
+      errorResponse.error = [];
+      errorResponse.message =
+        "User with this email or mobile number already exists";
+      errorResponse.statusCode = 409;
+      errorResponse.statusText = "Conflict";
+
+      return res.status(409).json(errorResponse);
+    }
+
+    //Hashing the Password using utility function
+    const hashedPassword = await hashPassword(password);
+
+    //Saving the Signup user data into Database
+    const user = await User.create({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      mobileNumber: mobileNumber,
+      hashedPassword: hashedPassword,
+    });
+
+    const limitedData = {
+      _id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      mobileNumber: user.mobileNumber,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
+    //Sending Response
+    successResponse.success = true;
+    successResponse.data = limitedData;
+    successResponse.message = "Signup Successful";
+    successResponse.statusCode = 201;
+    successResponse.statusText = "Created";
+
+    return res.status(201).json(successResponse);
+  } catch (error) {
+    //Sending error response
+    errorResponse.success = false;
+    errorResponse.error = error;
+    errorResponse.message = "Something went wrong";
+    errorResponse.statusCode = 500;
+    errorResponse.statusText = "Internal server error";
+
+    return res.status(500).json(errorResponse);
+  }
 };
 
 //SignIn Controller
 const signin = async (req, res) => {
-  //Sending Response
-  successResponse.success = true;
-  successResponse.data = [];
-  successResponse.message = "Signin Successful";
-  successResponse.statusCode = 200;
-  successResponse.statusText = "OK";
+  try {
+    const { email, password } = req.body;
 
-  return res.status(200).json(successResponse);
+    //Find the User if exists in the database based on email
+    const isUserExist = await User.findOne({
+      email,
+    });
+
+    if (!isUserExist) {
+      errorResponse.success = false;
+      errorResponse.error = [];
+      errorResponse.message = "User with this email doesn't exist";
+      errorResponse.statusCode = 404;
+      errorResponse.statusText = "NotFound";
+
+      return res.status(404).json(errorResponse);
+    }
+
+    // Compare UserPassword & Hashed Password from DB using the utility function
+    const isPasswordMatched = await comparePassword(
+      password,
+      isUserExist.hashedPassword
+    );
+
+    if (!isPasswordMatched) {
+      errorResponse.success = false;
+      errorResponse.error = [];
+      errorResponse.message = "Invalid password";
+      errorResponse.statusCode = 401;
+      errorResponse.statusText = "Unauthorized";
+
+      return res.status(401).json(errorResponse);
+    }
+
+    //JWT Token Creation for Access Token & Refresh Token
+    const accessToken = generateAccessToken(isUserExist);
+
+    const refreshToken = generateRefreshToken(isUserExist);
+
+    const limitedResponse = {
+      _id: isUserExist._id,
+      firstName: isUserExist.firstName,
+      lastName: isUserExist.lastName,
+      email: isUserExist.email,
+      mobileNumber: isUserExist.mobileNumber,
+      role: isUserExist.role,
+      profileImage: isUserExist.profileImage,
+      createdAt: isUserExist.createdAt,
+      updatedAt: isUserExist.updatedAt,
+      accessToken: accessToken,
+      refreshToken: refreshToken,
+    };
+
+    //Sending Response
+    successResponse.success = true;
+    successResponse.data = limitedResponse;
+    successResponse.message = "Signin Successful";
+    successResponse.statusCode = 200;
+    successResponse.statusText = "OK";
+
+    return res.status(200).json(successResponse);
+  } catch (error) {
+    //Sending error response
+    errorResponse.success = false;
+    errorResponse.error = error;
+    errorResponse.message = "Something went wrong";
+    errorResponse.statusCode = 500;
+    errorResponse.statusText = "Internal server error";
+
+    return res.status(500).json(errorResponse);
+  }
 };
 
 //Signout Controller
