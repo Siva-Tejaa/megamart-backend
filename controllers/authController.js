@@ -119,13 +119,8 @@ const signin = async (req, res) => {
       firstName: isUserExist.firstName,
       lastName: isUserExist.lastName,
       email: isUserExist.email,
-      mobileNumber: isUserExist.mobileNumber,
       role: isUserExist.role,
-      profileImage: isUserExist.profileImage,
-      createdAt: isUserExist.createdAt,
-      updatedAt: isUserExist.updatedAt,
       accessToken: accessToken,
-      refreshToken: refreshToken,
     };
 
     //Sending Response
@@ -135,7 +130,14 @@ const signin = async (req, res) => {
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";
 
-    return res.status(200).json(successResponse);
+    return res
+      .cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        sameSite: "strict",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      })
+      .status(200)
+      .json(successResponse);
   } catch (error) {
     //Sending error response
     errorResponse.success = false;

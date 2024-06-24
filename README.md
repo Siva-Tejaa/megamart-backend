@@ -49,6 +49,15 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
   - `POST /api/auth/signin` - Signin existing user
   - `GET /api/auth/signout` - Signout loggedin user
 
+- **Refresh Token**
+
+  - `POST /api/refresh-token` - Generates new Access Token valid for 1 Hour using the refresh token from cookies
+
+- **User**
+
+  - `GET /api/users/me` - get user profile details
+  - `PUT /api/users/me` - Update user profile
+
 ## Environment Variables
 
 The following environment variables are required to run the application:

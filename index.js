@@ -6,20 +6,29 @@ const app = express();
 const connectDB = require("./config/dbConfig");
 
 const cors = require("cors");
+var cookieParser = require("cookie-parser");
 
 //Routes Imports
 const authRoute = require("./routes/authRoute");
-
+const refreshTokenRoute = require("./routes/refreshTokenRoute");
+const userRoute = require("./routes/userRoute");
 const notFoundRoute = require("./routes/notFoundRoute");
 
 //Middlewares
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
 //Routes
 
 //Auth Route
 app.use("/api/auth", authRoute);
+
+//Refresh Token Route
+app.use("/api", refreshTokenRoute);
+
+//User Route
+app.use("/api/users/me", userRoute);
 
 // Use the not found route as the last route
 // app.use("*", notFoundRoute); or
