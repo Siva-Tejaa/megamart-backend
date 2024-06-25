@@ -4,8 +4,6 @@ const {
   verifyRefreshToken,
 } = require("../utils/jwtUtils");
 
-const JWT = require("jsonwebtoken");
-
 const refreshAccessTokenController = (req, res) => {
   const refreshToken = req.cookies.refreshToken;
 

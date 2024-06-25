@@ -159,7 +159,14 @@ const signout = async (req, res) => {
   successResponse.statusCode = 200;
   successResponse.statusText = "OK";
 
-  return res.status(200).json(successResponse);
+  return res
+    .clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+    })
+    .status(200)
+    .json(successResponse);
 };
 
 module.exports = { signup, signin, signout };

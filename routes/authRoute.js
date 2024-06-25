@@ -4,6 +4,9 @@ const router = express.Router();
 //Middleware
 const { signupMiddleware } = require("../middlewares/signupMiddleware");
 const { signinMiddleware } = require("../middlewares/signinMiddleware");
+const {
+  authenticateUser,
+} = require("../middlewares/authenticateUserMiddleware");
 
 //Controllers
 const { signup, signin, signout } = require("../controllers/authController");
@@ -14,7 +17,7 @@ router.post("/signup", signupMiddleware, signup);
 //SIGNIN || POST
 router.post("/signin", signinMiddleware, signin);
 
-//SIGNOUT || GET
-router.get("/signout", signout);
+//SIGNOUT || POST
+router.post("/signout", authenticateUser, signout);
 
 module.exports = router;

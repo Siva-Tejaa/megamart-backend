@@ -47,7 +47,7 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 
   - `POST /api/auth/signup` - Register new user
   - `POST /api/auth/signin` - Signin existing user
-  - `GET /api/auth/signout` - Signout loggedin user
+  - `POST /api/auth/signout` - Signout loggedin user
 
 - **Refresh Token**
 
@@ -55,7 +55,7 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 
 - **User**
 
-  - `GET /api/users/me` - get user profile details
+  - `GET /api/users/me` - Get User profile details
   - `PUT /api/users/me` - Update user profile
 
 ## Environment Variables
@@ -64,5 +64,7 @@ The following environment variables are required to run the application:
 
 - `PORT`: The port number the application will run on.
 - `MONGODB_URL`: The connection URL for MongoDB with username and password.
+- `JWT_ACCESS_SECRET`: Secret key for generating and verifying the JWT Access token
+- `JWT_REFRESH_SECRET`: Secret key for generating and verifying the JWT Refresh token
 
 Create a `.env` file in the root directory and add the above variables.
