@@ -2,6 +2,10 @@
 
 This is the backend for the MegaMart e-commerce application, built using Node.js, Express, and MongoDB.
 
+## Production Link
+
+[Production Link - https://mega-mart-lgq3.onrender.com](https://mega-mart-lgq3.onrender.com)
+
 ## Table of Contents
 
 - [Installation](#installation)
@@ -14,7 +18,7 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 1. Clone the repository:
 
    ```bash
-   git clone https://github.com/your-username/megamart-backend.git
+   git clone https://github.com/Siva-Tejaa/megamart-backend.git
    cd megamart-backend
    ```
 
@@ -57,6 +61,16 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 
   - `GET /api/users/me` - Get User profile details
   - `PUT /api/users/me` - Update user profile
+
+- **Seller - In Development**
+
+  - `POST /api/seller/products` - Add/Create New Product
+  - `GET /api/seller/products` - Get Seller Own products
+
+- **Admin - In Development**
+
+  - `GET /api/admin/customers` - Get all customer details
+  - `GET /api/admin/sellers` - Get all Seller details
 
 ## Environment Variables
 
