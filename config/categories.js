@@ -5,6 +5,7 @@ const allCategories = [
   "Appliances",
   "Furniture",
   "Beauty",
+  "Fragrances",
   "Health",
   "Toys",
   "Sports",
