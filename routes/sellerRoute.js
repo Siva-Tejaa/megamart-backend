@@ -7,6 +7,10 @@ const {
 } = require("../middlewares/authenticateUserMiddleware");
 
 const {
+  createProductMiddleware,
+} = require("../middlewares/createProductMiddleware");
+
+const {
   authenticateSeller,
 } = require("../middlewares/authenticateSellerMiddleware");
 
@@ -17,7 +21,13 @@ const {
 } = require("../controllers/sellerController");
 
 //POST PRODUCT  || POST
-router.post("/products", authenticateUser, authenticateSeller, createProduct);
+router.post(
+  "/products",
+  authenticateUser,
+  authenticateSeller,
+  createProductMiddleware,
+  createProduct
+);
 
 //GET SELLER OWN PRODUCTS  || GET
 router.get(

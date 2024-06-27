@@ -50,6 +50,48 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+    address: [
+      {
+        street: { type: String },
+        city: { type: String },
+        state: { type: String },
+        zip: { type: String },
+        country: { type: String },
+      },
+    ],
+    sellerInfo: {
+      storeName: { type: String },
+      storeDescription: { type: String },
+      products: [{ type: mongoose.Schema.Types.ObjectId, ref: "Product" }],
+    },
+    customerCart: [
+      {
+        productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+        quantity: { type: Number, default: 1 },
+      },
+    ],
+    customerOrders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
+    sellerOrders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
+    wishList: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Product",
+      },
+    ],
   },
   { timestamps: true }
 );

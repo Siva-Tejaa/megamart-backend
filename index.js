@@ -5,12 +5,14 @@ const app = express();
 //Database Imports
 const connectDB = require("./config/dbConfig");
 
+//Third Party Libraries
 const cors = require("cors");
 var cookieParser = require("cookie-parser");
 
 //Routes Imports
 const authRoute = require("./routes/authRoute");
 const refreshTokenRoute = require("./routes/refreshTokenRoute");
+const productRoute = require("./routes/productRoute");
 const userRoute = require("./routes/userRoute");
 const sellerRoute = require("./routes/sellerRoute");
 const adminRoute = require("./routes/adminRoute");
@@ -27,7 +29,10 @@ app.use(cookieParser());
 app.use("/api/auth", authRoute);
 
 //Refresh Token Route
-app.use("/api", refreshTokenRoute);
+app.use("/api/refresh-token", refreshTokenRoute);
+
+//Product Route
+app.use("/api/products", productRoute);
 
 //User Route
 app.use("/api/users/me", userRoute);

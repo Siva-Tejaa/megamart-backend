@@ -1,6 +1,7 @@
 const { successResponse, errorResponse } = require("../config/globalResponse");
 const User = require("../models/userModel");
 
+//Get User Details Controller
 const getUserProfile = async (req, res) => {
   try {
     const { _id, email, role } = req.user;
@@ -41,6 +42,7 @@ const getUserProfile = async (req, res) => {
   }
 };
 
+//Update User Profile Controller
 const updateUserProfile = async (req, res) => {
   try {
     const { _id } = req.user;

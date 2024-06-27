@@ -1,10 +1,10 @@
-# MegaMart Backend
+# MegaMart(MM) Backend
 
 This is the backend for the MegaMart e-commerce application, built using Node.js, Express, and MongoDB.
 
-## Production Link
+## Production API Link
 
-[Production Link - https://mega-mart-lgq3.onrender.com](https://mega-mart-lgq3.onrender.com)
+[Production API Link - https://mega-mart-lgq3.onrender.com](https://mega-mart-lgq3.onrender.com)
 
 ## Table of Contents
 
@@ -33,6 +33,8 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
    ```plaintext
    PORT=8000
    MONGODB_URL=The connection URL for MongoDB with username and password
+   JWT_ACCESS_SECRET=Secret key for generating and verifying the JWT Access token
+   JWT_REFRESH_SECRET=Secret key for generating and verifying the JWT Refresh token
    ```
 
 ## Usage
@@ -57,6 +59,11 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 
   - `POST /api/refresh-token` - Generates new Access Token valid for 1 Hour using the refresh token from cookies
 
+- **Products**
+
+  - `GET /api/products` - Get All Products
+  - `PUT /api/products/productid` - Get Single Product details
+
 - **User**
 
   - `GET /api/users/me` - Get User profile details
@@ -65,7 +72,7 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 - **Seller - In Development**
 
   - `POST /api/seller/products` - Add/Create New Product
-  - `GET /api/seller/products` - Get Seller Own products
+  - `GET /api/seller/products` - Get Seller Own Products
 
 - **Admin - In Development**
 

@@ -6,6 +6,6 @@ const {
   refreshAccessTokenController,
 } = require("../controllers/refreshTokenController");
 
-router.post("/refresh-token", refreshAccessTokenController);
+router.post("/", refreshAccessTokenController);
 
 module.exports = router;

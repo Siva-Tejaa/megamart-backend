@@ -1,26 +1,14 @@
 const { successResponse, errorResponse } = require("../config/globalResponse");
-const User = require("../models/userModel");
+const Product = require("../models/productModel");
 
-//Get All Customers Controller
-const getAllCustomers = async (req, res) => {
+//Get All Products Controller
+const getAllProducts = async (req, res) => {
   try {
-    const allCustomers = await User.find(
-      {
-        role: { $in: ["customer"] },
-      },
-      {
-        hashedPassword: 0,
-        sellerInfo: 0,
-        sellerOrders: 0,
-        wishList: 0,
-        customerCart: 0,
-      }
-    ).exec();
-
-    //Sending success response
+    const allProducts = await Product.find();
+    //Sending Response
     successResponse.success = true;
-    successResponse.data = allCustomers;
-    successResponse.message = "All Customers fetched successfully";
+    successResponse.data = allProducts;
+    successResponse.message = "All products fetched successfully";
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";
 
@@ -37,25 +25,26 @@ const getAllCustomers = async (req, res) => {
   }
 };
 
-//Get All Sellers Controller
-const getAllSellers = async (req, res) => {
+//Get Product Details By ID Controller
+const getProductByID = async (req, res) => {
   try {
-    const allSellers = await User.find(
-      {
-        role: { $in: ["seller"] },
-      },
-      {
-        hashedPassword: 0,
-        wishList: 0,
-        customerCart: 0,
-        customerOrders: 0,
-      }
-    ).exec();
+    const productByID = await Product.findById(req.params.productid);
 
-    //Sending success response
+    if (!productByID) {
+      //Sending error response
+      errorResponse.success = false;
+      errorResponse.error = [];
+      errorResponse.message = `Product with ID ${req.params.productid} not found`;
+      errorResponse.statusCode = 404;
+      errorResponse.statusText = "Not Found";
+
+      return res.status(404).json(errorResponse);
+    }
+
+    //Sending Success Response
     successResponse.success = true;
-    successResponse.data = allSellers;
-    successResponse.message = "All Sellers fetched successfully";
+    successResponse.data = productByID;
+    successResponse.message = "Product details fetched successfully";
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";
 
@@ -72,4 +61,4 @@ const getAllSellers = async (req, res) => {
   }
 };
 
-module.exports = { getAllCustomers, getAllSellers };
+module.exports = { getAllProducts, getProductByID };
