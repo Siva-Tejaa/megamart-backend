@@ -77,7 +77,11 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 - **Admin - In Development**
 
   - `GET /api/admin/customers` - Get all customer details
+  - `GET /api/admin/customers/:customerId/orders` - Get Customer Orders by Customer ID
+
   - `GET /api/admin/sellers` - Get all Seller details
+  - `GET /api/admin/sellers/:sellerId/products` - Get Seller Products by Seller ID
+  - `GET /api/admin/sellers/:sellerId/orders` - Get Seller Orders by Seller ID
 
 ## Environment Variables
 

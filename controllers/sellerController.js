@@ -54,9 +54,15 @@ const getSellerProducts = async (req, res) => {
       .populate("sellerInfo.products")
       .exec();
 
+    //Resetting the data/error Response
+    errorResponse.error = {};
+    successResponse.data = {};
+
     //Sending Response
     successResponse.success = true;
-    successResponse.data = sellerProducts.sellerInfo.products;
+    successResponse.data.products = sellerProducts.sellerInfo.products;
+    successResponse.data.totalProducts =
+      sellerProducts.sellerInfo.products.length;
     successResponse.message = "All Seller Products fetched successfully";
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";

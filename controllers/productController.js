@@ -5,9 +5,15 @@ const Product = require("../models/productModel");
 const getAllProducts = async (req, res) => {
   try {
     const allProducts = await Product.find();
+
+    //Resetting the data/error Response
+    errorResponse.error = {};
+    successResponse.data = {};
+
     //Sending Response
     successResponse.success = true;
-    successResponse.data = allProducts;
+    successResponse.data.products = allProducts;
+    successResponse.data.totalProducts = allProducts.length;
     successResponse.message = "All products fetched successfully";
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";
@@ -40,6 +46,10 @@ const getProductByID = async (req, res) => {
 
       return res.status(404).json(errorResponse);
     }
+
+    //Resetting the data/error Response
+    errorResponse.error = {};
+    successResponse.data = {};
 
     //Sending Success Response
     successResponse.success = true;
