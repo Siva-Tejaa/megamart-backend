@@ -62,17 +62,31 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 - **Products**
 
   - `GET /api/products` - Get All Products
-  - `PUT /api/products/productid` - Get Single Product details
+  - `PUT /api/products/:productid` - Get Single Product details
 
 - **User**
 
   - `GET /api/users/me` - Get User profile details
   - `PUT /api/users/me` - Update user profile
 
+- **Customer - In Development**
+
+  - `POST /api/customers/me/cart` - Add an item to the cart
+  - `GET /api/customers/me/cart` - GET all Cart Items
+  - `PUT /api/customers/me/cart/:productId` - Decrease Item Quantity from Cart
+  - `DELETE /api/customers/me/cart/:productId` - Remove an Item from Cart
+  - `DELETE /api/customers/me/cart` - Remove all Items from Cart
+
+  - `POST /api/customers/me/orders` - Place Order
+  - `GET /api/customers/me/orders` - Get All Orders
+
+  - `GET /api/customers/me/wishlist` - Get All Wishlist Items
+  - `POST /api/customers/me/wishlist` - Add/Remove Product to WishList Items
+
 - **Seller - In Development**
 
-  - `POST /api/seller/products` - Add/Create New Product
-  - `GET /api/seller/products` - Get Seller Own Products
+  - `POST /api/sellers/me/products` - Add/Create New Product
+  - `GET /api/sellers/me/products` - Get Seller Own Products
 
 - **Admin - In Development**
 

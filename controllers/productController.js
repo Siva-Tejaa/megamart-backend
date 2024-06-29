@@ -1,5 +1,6 @@
 const { successResponse, errorResponse } = require("../config/globalResponse");
 const Product = require("../models/productModel");
+const User = require("../models/userModel");
 
 //Get All Products Controller
 const getAllProducts = async (req, res) => {

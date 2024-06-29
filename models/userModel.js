@@ -70,6 +70,7 @@ const userSchema = new mongoose.Schema(
     },
     customerCart: [
       {
+        _id: false,
         productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
         quantity: { type: Number, default: 1 },
       },

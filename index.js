@@ -14,17 +14,17 @@ const authRoute = require("./routes/authRoute");
 const refreshTokenRoute = require("./routes/refreshTokenRoute");
 const productRoute = require("./routes/productRoute");
 const userRoute = require("./routes/userRoute");
+const customerRoute = require("./routes/customerRoute");
 const sellerRoute = require("./routes/sellerRoute");
 const adminRoute = require("./routes/adminRoute");
 const notFoundRoute = require("./routes/notFoundRoute");
 
-//Middlewares
+//----- Middlewares -----
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
 //----- Routes -----
-
 //Auth Route
 app.use("/api/auth", authRoute);
 
@@ -37,8 +37,11 @@ app.use("/api/products", productRoute);
 //User Route
 app.use("/api/users/me", userRoute);
 
+//Customer Route
+app.use("/api/customers/me", customerRoute);
+
 //Seller Route
-app.use("/api/seller", sellerRoute);
+app.use("/api/sellers/me", sellerRoute);
 
 //Admin Route
 app.use("/api/admin", adminRoute);
