@@ -419,25 +419,18 @@ const addOrRemoveWishListItem = async (req, res) => {
     // Save the updated user
     await user.save();
 
+    const updatedUser = await User.findById(req.user._id)
+      .populate("wishList")
+      .exec();
+
     //Resetting the data/error Response
     errorResponse.error = {};
     successResponse.data = {};
 
     //Sending Success Response
     successResponse.success = true;
-    successResponse.data = user.wishList;
-    successResponse.statusCode = 200;
-    successResponse.statusText = "OK";
-
-    return res.status(200).json(successResponse);
-
-    //Resetting the data/error Response
-    successResponse.data = {};
-
-    //Sending Success Response
-    successResponse.success = true;
-    successResponse.data = [];
-    successResponse.message = "Product added to wishlist successfully";
+    successResponse.data.wishListItems = updatedUser.wishList;
+    successResponse.data.totalWishListItems = updatedUser.wishList.length;
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";
 
