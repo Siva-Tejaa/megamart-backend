@@ -5,7 +5,7 @@ const User = require("../models/userModel");
 //Get All Products Controller
 const getAllProducts = async (req, res) => {
   try {
-    const allProducts = await Product.find();
+    const allProducts = await Product.find().sort({ createdAt: -1 });
 
     //Resetting the data/error Response
     errorResponse.error = {};
