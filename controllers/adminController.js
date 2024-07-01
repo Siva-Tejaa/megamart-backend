@@ -1,6 +1,7 @@
 const { successResponse, errorResponse } = require("../config/globalResponse");
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
+const Order = require("../models/orderModel");
 
 //Get All Customers Controller
 const getAllCustomers = async (req, res) => {
@@ -66,7 +67,14 @@ const getCustomerOrdersByCustomerId = async (req, res) => {
     // Fetch products associated with the seller
     const customerOrders = await Order.find({
       customerId: req.params.customerId,
-    });
+    })
+      .populate({
+        path: "products.productId", // Assuming your Order schema has products array with productId referencing Product model
+        model: "Product", // Name of the model to populate
+        select: "title productImage", // Optional: Specify fields to include or exclude
+      })
+      .sort({ createdAt: -1 })
+      .exec();
 
     // If no products are found, respond accordingly
     if (customerOrders.length === 0) {
@@ -166,7 +174,7 @@ const getSellerProductsBySellerId = async (req, res) => {
     // Fetch products associated with the seller
     const sellerProducts = await Product.find({
       sellerId: req.params.sellerId,
-    });
+    }).sort({ createdAt: -1 });
 
     // If no products are found, respond accordingly
     if (sellerProducts.length === 0) {
@@ -219,10 +227,17 @@ const getSellerOrdersBySellerId = async (req, res) => {
       return res.status(404).json(errorResponse);
     }
 
-    // Fetch products associated with the seller
+    // Find all orders that contain products sold by the seller
     const sellerOrders = await Order.find({
-      sellerId: req.params.sellerId,
-    });
+      "products.sellerId": req.params.sellerId,
+    })
+      .populate({
+        path: "products.productId", // Assuming your Order schema has products array with productId referencing Product model
+        model: "Product", // Name of the model to populate
+        select: "title productImage", // Optional: Specify fields to include or exclude
+      })
+      .sort({ createdAt: -1 })
+      .exec();
 
     // If no products are found, respond accordingly
     if (sellerOrders.length === 0) {

@@ -17,7 +17,7 @@ const {
   removeItemFromCart,
   removeAllItemsFromCart,
   getAllCartItems,
-  placeOrder,
+  placeCustomerOrder,
   getAllOrders,
   getWishList,
   addOrRemoveWishListItem,
@@ -44,7 +44,7 @@ router.delete("/cart", authenticateUser, removeAllItemsFromCart);
 router.get("/cart", authenticateUser, getAllCartItems);
 
 //POST ORDER || POST
-router.post("/orders", authenticateUser, placeOrder);
+router.post("/orders", authenticateUser, placeCustomerOrder);
 
 //GET ALL ORDERS || GET
 router.get("/orders", authenticateUser, getAllOrders);

@@ -18,6 +18,7 @@ const {
 const {
   createProduct,
   getSellerProducts,
+  getSellerOrders,
 } = require("../controllers/sellerController");
 
 //POST PRODUCT  || POST
@@ -36,5 +37,8 @@ router.get(
   authenticateSeller,
   getSellerProducts
 );
+
+//GET SELLERS ORDERS || GET
+router.get("/orders", authenticateUser, authenticateSeller, getSellerOrders);
 
 module.exports = router;

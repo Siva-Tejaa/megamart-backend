@@ -2,6 +2,7 @@ const { successResponse, errorResponse } = require("../config/globalResponse");
 
 const User = require("../models/userModel");
 const Product = require("../models/productModel");
+const Order = require("../models/orderModel");
 
 //Add Product Item to Cart
 const addItemToCart = async (req, res) => {
@@ -261,6 +262,7 @@ const getAllCartItems = async (req, res) => {
         path: "customerCart.productId",
         model: "Product",
       })
+      .sort({ createdAt: -1 })
       .exec();
 
     //Resetting the data/error Response
@@ -288,21 +290,92 @@ const getAllCartItems = async (req, res) => {
   }
 };
 
-//TODO : Place Orders of Customer
-const placeOrder = async (req, res) => {
+//Customer Place Orders of Customer
+const placeCustomerOrder = async (req, res) => {
   try {
+    const userId = req.user._id;
+
+    // Fetch user cart to get customer cart products
+    const user = await User.findById(userId);
+
+    const products = user.customerCart;
+
+    // Check if customerCart is empty
+    if (user.customerCart.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: [],
+        message: "Cannot place order with an empty cart",
+        statusCode: 400,
+        statusText: "Bad Request",
+      });
+    }
+
+    // Initialize totalAmount and orderProducts array
+    let totalAmount = 0;
+    const orderProducts = [];
+
+    // Fetch product details and calculate total amount
+    for (const item of products) {
+      const product = await Product.findById(item.productId);
+
+      if (!product) {
+        throw new Error(`Product with ID ${item.productId} not found`);
+      }
+
+      totalAmount += product.price * item.quantity;
+      orderProducts.push({
+        productId: product._id,
+        quantity: item.quantity,
+        price: product.price,
+        sellerId: product.sellerId,
+      });
+    }
+
+    // Create the order
+    const order = new Order({
+      customerId: userId,
+      products: orderProducts,
+      totalAmount,
+    });
+
+    await order.save();
+
+    // Update customer's order history
+    const updatedUser = await User.findById(userId);
+    updatedUser.customerOrders.push(order._id);
+    await updatedUser.save();
+
+    // Update seller's order history
+    for (const item of orderProducts) {
+      const product = await Product.findById(item.productId);
+      const seller = await User.findById(product.sellerId);
+      if (seller) {
+        seller.sellerOrders.push(order._id);
+        await seller.save();
+      }
+    }
+
+    // Empty customer's cart after placing order
+    updatedUser.customerCart = [];
+    await updatedUser.save();
+
     //Resetting the data/error Response
     successResponse.data = {};
 
     //Sending Success Response
     successResponse.success = true;
-    successResponse.data = [];
-    successResponse.message = "Products Ordered successfully";
+    successResponse.data.order = order;
+    successResponse.data.totalOrderProducts = order.products.length;
+    successResponse.message = "Order Placed successfully";
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";
 
     return res.status(200).json(successResponse);
   } catch (error) {
+    //Resetting the data/error Response
+    successResponse.error = {};
+
     //Sending error response
     errorResponse.success = false;
     errorResponse.error = error;
@@ -314,15 +387,26 @@ const placeOrder = async (req, res) => {
   }
 };
 
-//TODO : Get All Orders of Customer
+//Get All Orders of Customer
 const getAllOrders = async (req, res) => {
   try {
+    const userId = req.user._id;
+
+    const userOrders = await Order.find({ customerId: userId })
+      .populate({
+        path: "products.productId", // Assuming your Order schema has products array with productId referencing Product model
+        model: "Product", // Name of the model to populate
+        select: "title productImage", // Optional: Specify fields to include or exclude
+      })
+      .sort({ createdAt: -1 })
+      .exec();
+
     //Resetting the data/error Response
     successResponse.data = {};
 
     //Sending Success Response
     successResponse.success = true;
-    successResponse.data = [];
+    successResponse.data = userOrders;
     successResponse.message = "All Orders fetched successfully";
     successResponse.statusCode = 200;
     successResponse.statusText = "OK";
@@ -344,7 +428,10 @@ const getAllOrders = async (req, res) => {
 const getWishList = async (req, res) => {
   try {
     // Get the user's wishlist items with populated product details
-    const user = await User.findById(req.user._id).populate("wishList").exec();
+    const user = await User.findById(req.user._id)
+      .populate("wishList")
+      .sort({ createdAt: -1 })
+      .exec();
 
     if (!user) {
       errorResponse.success = false;
@@ -453,7 +540,7 @@ module.exports = {
   removeItemFromCart,
   removeAllItemsFromCart,
   getAllCartItems,
-  placeOrder,
+  placeCustomerOrder,
   getAllOrders,
   getWishList,
   addOrRemoveWishListItem,

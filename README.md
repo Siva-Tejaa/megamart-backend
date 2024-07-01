@@ -1,10 +1,10 @@
 # MegaMart(MM) Backend
 
-This is the backend for the MegaMart e-commerce application, built using Node.js, Express, and MongoDB.
+This is the backend for the MegaMart e-commerce application, built using Node.js, Express.js, and MongoDB. The application handles user authentication, product management, order processing, and more.
 
 ## Production API Link
 
-[Production API Link - https://mega-mart-lgq3.onrender.com](https://mega-mart-lgq3.onrender.com)
+Production API Link : [https://mega-mart-lgq3.onrender.com](https://mega-mart-lgq3.onrender.com)
 
 ## Table of Contents
 
@@ -62,17 +62,17 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
 - **Products**
 
   - `GET /api/products` - Get All Products
-  - `PUT /api/products/:productid` - Get Single Product details
+  - `GET /api/products/:productid` - Get Single Product details
 
 - **User**
 
   - `GET /api/users/me` - Get User profile details
   - `PUT /api/users/me` - Update user profile
 
-- **Customer - In Development**
+- **Customer**
 
-  - `POST /api/customers/me/cart` - Add an item to the cart
-  - `GET /api/customers/me/cart` - GET all Cart Items
+  - `POST /api/customers/me/cart` - Add/Increase an item to the cart
+  - `GET /api/customers/me/cart` - Get all Cart Items
   - `PUT /api/customers/me/cart/:productId` - Decrease Item Quantity from Cart
   - `DELETE /api/customers/me/cart/:productId` - Remove an Item from Cart
   - `DELETE /api/customers/me/cart` - Remove all Items from Cart
@@ -83,12 +83,13 @@ This is the backend for the MegaMart e-commerce application, built using Node.js
   - `GET /api/customers/me/wishlist` - Get All Wishlist Items
   - `POST /api/customers/me/wishlist` - Add/Remove Product to WishList Items
 
-- **Seller - In Development**
+- **Seller**
 
   - `POST /api/sellers/me/products` - Add/Create New Product
   - `GET /api/sellers/me/products` - Get Seller Own Products
+  - `GET /api/sellers/me/orders` - Get All Seller Orders
 
-- **Admin - In Development**
+- **Admin**
 
   - `GET /api/admin/customers` - Get all customer details
   - `GET /api/admin/customers/:customerId/orders` - Get Customer Orders by Customer ID
