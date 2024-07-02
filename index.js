@@ -8,6 +8,17 @@ const connectDB = require("./config/dbConfig");
 //Third Party Libraries
 const cors = require("cors");
 var cookieParser = require("cookie-parser");
+const helmet = require("helmet");
+const mongoSanitize = require("express-mongo-sanitize");
+const rateLimiter = require("express-rate-limit");
+
+//IP Limiter
+const limiter = rateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+  standardHeaders: "draft-7", // draft-6: `RateLimit-*` headers; draft-7: combined `RateLimit` header
+  legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+});
 
 //Routes Imports
 const authRoute = require("./routes/authRoute");
@@ -23,6 +34,9 @@ const notFoundRoute = require("./routes/notFoundRoute");
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
+app.use(helmet());
+app.use(mongoSanitize());
+app.use(limiter);
 
 //----- Routes -----
 //Auth Route
