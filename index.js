@@ -2,6 +2,8 @@ require("dotenv").config();
 const express = require("express");
 const app = express();
 
+const cronjob = require("./cronjob");
+
 //Database Imports
 const connectDB = require("./config/dbConfig");
 
@@ -29,6 +31,9 @@ const customerRoute = require("./routes/customerRoute");
 const sellerRoute = require("./routes/sellerRoute");
 const adminRoute = require("./routes/adminRoute");
 const notFoundRoute = require("./routes/notFoundRoute");
+
+//cron Job Configuration for Production Alive
+const heartBeatRoute = require("./routes/heartBeatRoute");
 
 //----- Middlewares -----
 app.use(express.json());
@@ -59,6 +64,9 @@ app.use("/api/sellers/me", sellerRoute);
 
 //Admin Route
 app.use("/api/admin", adminRoute);
+
+//HeartBeat Route for making Production Render Service Alive
+app.use("/api", heartBeatRoute);
 
 // Use the not found route as the last route
 // app.use("*", notFoundRoute); or
