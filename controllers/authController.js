@@ -164,7 +164,8 @@ const signin = async (req, res) => {
     return res
       .cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        sameSite: "none",
+        sameSite: "None", // Use 'None' for cross-origin requests
+        secure: true, // Ensure the request is over HTTPS in production
         maxAge: 7 * 24 * 60 * 60 * 1000,
       })
       .status(200)
