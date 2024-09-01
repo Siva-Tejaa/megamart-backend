@@ -167,6 +167,7 @@ const signin = async (req, res) => {
         sameSite: "None", // Use 'None' for cross-origin requests
         secure: true, // Ensure the request is over HTTPS in production
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        path: "/", // Make the cookie available across the entire domain /about /contact
       })
       .status(200)
       .json(successResponse);
