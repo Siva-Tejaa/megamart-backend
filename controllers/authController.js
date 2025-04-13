@@ -58,31 +58,31 @@ const signup = async (req, res) => {
     };
 
     //Email Service msg formation
-    const msg = {
-      to: user.email, // Change to your recipient
-      from: "asivateja1999@gmail.com", // Change to your verified sender
-      subject: "Welcome to MegaMart!",
-      // text: `Hi ${user.firstName}, welcome to MegaMart`,
-      html: `
-      <div style="font-family: Arial, sans-serif; line-height: 1.6;">
-        <h3>Welcome to MegaMart, ${firstName} ${lastName}!</h3>
-        <p>Hi ${firstName},</p>
-        <p>Thank you for signing up at MegaMart. We're thrilled to have you with us.</p>
-        <p>As a new member, you can start exploring our wide range of products and enjoy exclusive deals right away.</p>
-        <p>If you have any questions, feel free to reach out to our support team.</p>
-        <p>Happy shopping!</p>
-        <p>Best regards,</p>
-        <p>The MegaMart Team</p>
-      </div>
-    `,
-    };
+    // const msg = {
+    //   to: user.email, // Change to your recipient
+    //   from: "asivateja1999@gmail.com", // Change to your verified sender
+    //   subject: "Welcome to MegaMart!",
+    //   // text: `Hi ${user.firstName}, welcome to MegaMart`,
+    //   html: `
+    //   <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+    //     <h3>Welcome to MegaMart, ${firstName} ${lastName}!</h3>
+    //     <p>Hi ${firstName},</p>
+    //     <p>Thank you for signing up at MegaMart. We're thrilled to have you with us.</p>
+    //     <p>As a new member, you can start exploring our wide range of products and enjoy exclusive deals right away.</p>
+    //     <p>If you have any questions, feel free to reach out to our support team.</p>
+    //     <p>Happy shopping!</p>
+    //     <p>Best regards,</p>
+    //     <p>The MegaMart Team</p>
+    //   </div>
+    // `,
+    // };
 
-    try {
-      await sgMail.send(msg);
-      //Email Sent Successfully
-    } catch (error) {
-      //Error Encountered while sending email
-    }
+    // try {
+    //   await sgMail.send(msg);
+    //   //Email Sent Successfully
+    // } catch (error) {
+    //   //Error Encountered while sending email
+    // }
 
     //Sending Response
     successResponse.success = true;
